@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blogger | Kamieo Kreations</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Write and publish blog posts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14202E;
+  --chalk:#F5F4F1;
+  --stripe:#D9D8D3;
+  --thread:#B08D57;
+  --wine:#6B2A33;
+  --white:#FFFFFF;
+  --muted:#5B6672;
+  --display:'Bodoni Moda',Georgia,serif;
+  --body:'Jost','Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--chalk);line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--thread);outline-offset:3px}
+.wrap{width:min(1180px,92%);margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.15;letter-spacing:-.01em}
+h1{font-size:clamp(2.6rem,6vw,4.8rem)}
+h2{font-size:clamp(1.9rem,3.6vw,2.8rem);margin-bottom:.6rem}
+h3{font-size:1.35rem;margin-bottom:.4rem}
+p{max-width:62ch}
+.lead{font-size:1.15rem;color:var(--muted)}
+section{padding:clamp(3.5rem,8vw,6.5rem) 0}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:50;background:var(--ink);color:var(--chalk)}
+.site-header .wrap{display:flex;align-items:center;justify-content:space-between;height:78px}
+.logo{display:flex;align-items:center;gap:.7rem}
+.logo img{height:52px;width:auto;background:#fff;padding:3px;border-radius:2px}
+.logo-text{display:flex;flex-direction:column;line-height:1}
+.logo-text strong{font-family:var(--display);font-size:1.6rem;letter-spacing:.14em;font-weight:500}
+.logo-text span{font-size:.62rem;letter-spacing:.5em;color:var(--thread);margin-top:.3rem;padding-left:.15rem}
+.nav{display:flex;align-items:center;gap:2rem}
+.nav a{font-size:.88rem;letter-spacing:.14em;text-transform:uppercase;padding:.3rem 0;border-bottom:1px solid transparent;transition:border-color .2s}
+.nav a:hover,.nav a.active{border-color:var(--thread)}
+.nav a.btn-nav{border:1px solid var(--thread);padding:.55rem 1.1rem;color:var(--thread)}
+.nav a.btn-nav:hover,.nav a.btn-nav.active{background:var(--thread);color:var(--ink)}
+.cart-btn{background:none;border:0;color:inherit;cursor:pointer;font:inherit;font-size:.88rem;letter-spacing:.1em;display:flex;align-items:center;gap:.4rem}
+.cart-count{background:var(--thread);color:var(--ink);border-radius:20px;min-width:22px;height:22px;display:inline-grid;place-items:center;font-size:.75rem;font-weight:600}
+.menu-toggle{display:none;background:none;border:0;color:inherit;font-size:1.7rem;cursor:pointer}
+@media(max-width:960px){
+  .menu-toggle{display:block}
+  .nav{position:absolute;top:78px;left:0;right:0;background:var(--ink);flex-direction:column;align-items:flex-start;padding:1.2rem 4%;gap:1.1rem;display:none;border-top:1px solid #2a3a4d}
+  .nav.open{display:flex}
+}
+
+/* buttons */
+.btn{display:inline-block;padding:.95rem 1.9rem;border:1px solid var(--ink);background:var(--ink);color:var(--chalk);font-family:var(--body);font-size:.88rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:var(--thread);border-color:var(--thread);color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--chalk);border-color:var(--ink)}
+.btn.light{background:var(--chalk);color:var(--ink);border-color:var(--chalk)}
+.btn.light:hover{background:var(--thread);border-color:var(--thread)}
+.btn.small{padding:.6rem 1.1rem;font-size:.78rem}
+
+/* hero: pinstripe is the one memorable element */
+.hero{background:var(--ink);color:var(--chalk);position:relative;overflow:hidden;padding:0}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(245,244,241,.07) 46px 47px)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center;min-height:82vh;padding:4rem 0}
+.hero h1{margin-bottom:1.2rem}
+.hero p{color:#c9cfd6;margin-bottom:2rem;font-size:1.15rem}
+.hero .actions{display:flex;gap:1rem;flex-wrap:wrap}
+.hero-img{aspect-ratio:4/5;background:#22324a center/cover no-repeat;border:1px solid rgba(176,141,87,.5);outline:1px solid rgba(176,141,87,.25);outline-offset:12px}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr;min-height:auto}.hero-img{aspect-ratio:4/3;order:-1;outline:0}}
+
+/* page banner */
+.banner{background:var(--ink);color:var(--chalk);padding:4.5rem 0 3.5rem;position:relative}
+.banner::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(245,244,241,.06) 46px 47px)}
+.banner .wrap{position:relative}
+.banner p{color:#c9cfd6;margin-top:.8rem}
+
+/* two paths */
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.path{position:relative;min-height:440px;background:#22324a center/cover no-repeat;color:var(--chalk);display:flex;align-items:flex-end;padding:2rem}
+.path::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(20,32,46,.88),rgba(20,32,46,.1) 60%)}
+.path>div{position:relative;z-index:1}
+.path p{color:#dfe3e8;margin-bottom:1rem}
+@media(max-width:760px){.paths{grid-template-columns:1fr}.path{min-height:340px}}
+
+/* split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.split .img{aspect-ratio:4/5;background:#cfcfca center/cover no-repeat}
+.split.reverse .img{order:2}
+@media(max-width:860px){.split{grid-template-columns:1fr;gap:2rem}.split.reverse .img{order:0}}
+.split p+p{margin-top:1rem}
+
+/* process: a true sequence, so numbered */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--stripe)}
+.step{padding:1.8rem 1.5rem 1.8rem 0;border-right:1px solid var(--stripe);padding-left:1.5rem}
+.step:first-child{padding-left:0}
+.step:last-child{border-right:0}
+.step b{font-family:var(--display);font-size:2rem;color:var(--thread);display:block;margin-bottom:.4rem;font-weight:500}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}.step{border-bottom:1px solid var(--stripe);padding-left:0}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+
+.dark{background:var(--ink);color:var(--chalk)}
+.dark .lead,.dark p{color:#c9cfd6}
+.cta-band{text-align:center}
+.cta-band p{margin:0 auto 1.8rem}
+
+/* services list */
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.service{background:var(--white);padding:2rem;border-top:3px solid var(--thread)}
+.service p{color:var(--muted);font-size:.98rem}
+@media(max-width:860px){.services{grid-template-columns:1fr}}
+
+/* shop */
+.toolbar{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem}
+.chip{padding:.5rem 1.1rem;border:1px solid var(--stripe);background:var(--white);font:inherit;font-size:.85rem;letter-spacing:.08em;cursor:pointer}
+.chip.on{background:var(--ink);color:var(--chalk);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.8rem}
+.card{background:var(--white);display:flex;flex-direction:column}
+.card .pic{aspect-ratio:3/4;background:var(--stripe) center/cover no-repeat;display:grid;place-items:center;color:var(--muted);font-family:var(--display);font-size:1.1rem;text-align:center;padding:1rem;position:relative}
+.card .tag{position:absolute;top:.8rem;left:.8rem;background:var(--wine);color:#fff;font-size:.72rem;letter-spacing:.1em;padding:.2rem .6rem;text-transform:uppercase}
+.card .info{padding:1.1rem 1.2rem 1.3rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.card .price{font-weight:600}
+.card .desc{color:var(--muted);font-size:.92rem;line-height:1.5}
+.card .row{display:flex;gap:.6rem;margin-top:auto}
+.card select{flex:1;padding:.55rem;border:1px solid var(--stripe);background:var(--chalk);font:inherit;font-size:.9rem}
+.empty{padding:3rem;text-align:center;color:var(--muted);background:var(--white)}
+
+/* cart drawer */
+.overlay{position:fixed;inset:0;background:rgba(20,32,46,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:90}
+.overlay.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--chalk);z-index:100;transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--stripe)}
+.drawer header button{background:none;border:0;font-size:1.8rem;cursor:pointer}
+.drawer .items{flex:1;overflow:auto;padding:1rem 1.5rem}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--stripe);align-items:center}
+.line .thumb{width:64px;height:80px;background:var(--stripe) center/cover}
+.line small{color:var(--muted)}
+.line .qty{display:flex;align-items:center;gap:.5rem;margin-top:.3rem}
+.line .qty button{width:26px;height:26px;border:1px solid var(--stripe);background:#fff;cursor:pointer}
+.line .rm{background:none;border:0;color:var(--wine);cursor:pointer;font-size:.8rem;text-decoration:underline}
+.drawer footer{padding:1.2rem 1.5rem;border-top:1px solid var(--stripe)}
+.total{display:flex;justify-content:space-between;font-size:1.15rem;font-weight:600;margin-bottom:1rem}
+.drawer footer .btn{width:100%;text-align:center}
+.drawer footer small{display:block;margin-top:.7rem;color:var(--muted)}
+
+/* forms */
+.form{background:var(--white);padding:2.2rem;display:grid;gap:1.2rem;grid-template-columns:1fr 1fr}
+.form .full{grid-column:1/-1}
+.form label{display:flex;flex-direction:column;gap:.35rem;font-size:.9rem;letter-spacing:.04em}
+.form input,.form select,.form textarea{padding:.8rem;border:1px solid var(--stripe);background:var(--chalk);font:inherit;font-size:1rem}
+.form textarea{min-height:120px;resize:vertical}
+@media(max-width:640px){.form{grid-template-columns:1fr;padding:1.4rem}}
+.book-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:3.5rem}
+@media(max-width:860px){.book-grid{grid-template-columns:1fr;gap:2rem}}
+.contact-list{list-style:none;margin-top:1.5rem;display:grid;gap:.9rem}
+.contact-list b{display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--thread)}
+.note{background:var(--white);border-left:3px solid var(--thread);padding:1rem 1.2rem;margin-top:1.5rem;font-size:.95rem;color:var(--muted)}
+
+/* footer */
+.site-footer{background:var(--ink);color:#c9cfd6;padding:3.5rem 0 2rem;font-size:.95rem}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem}
+.site-footer h4{color:var(--chalk);font-family:var(--display);font-weight:500;margin-bottom:.8rem;font-size:1.1rem}
+.site-footer li{list-style:none;margin-bottom:.4rem}
+.site-footer a:hover{color:var(--thread)}
+.copy{border-top:1px solid #2a3a4d;margin-top:2.5rem;padding-top:1.2rem;font-size:.85rem}
+@media(max-width:760px){.foot{grid-template-columns:1fr}}
+
+/* admin */
+.admin-box{background:var(--white);padding:2rem;margin-bottom:2rem}
+.admin-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:2rem;align-items:start}
+@media(max-width:900px){.admin-grid{grid-template-columns:1fr}}
+.form.one{grid-template-columns:1fr}
+.plist{display:grid;gap:.8rem}
+.prow{display:grid;grid-template-columns:56px 1fr auto;gap:1rem;align-items:center;background:var(--chalk);padding:.7rem}
+.prow .thumb{width:56px;height:70px;background:var(--stripe) center/cover}
+.prow small{color:var(--muted)}
+.prow .acts{display:flex;gap:.4rem;flex-wrap:wrap}
+.msg{padding:.8rem 1rem;margin-bottom:1rem;font-size:.95rem}
+.msg.ok{background:#e4efe4;color:#24522a}
+.msg.err{background:#f3dcdc;color:#7a1f1f}
+.demo-flag{background:#fff3d6;border-left:3px solid var(--thread);padding:.9rem 1.1rem;margin-bottom:1.5rem;font-size:.92rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== image slots: every photo is an <img>; if it fails to load the label shows instead ===== */
+.slot{position:relative;overflow:hidden;display:block;background:#cfd0cb}
+.slot::before{content:attr(data-name);position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:1rem;font-family:var(--display);color:var(--muted)}
+.slot img{position:relative;width:100%;height:100%;object-fit:cover;display:block}
+.hero .slot{aspect-ratio:4/5;border:1px solid rgba(176,141,87,.5);outline:1px solid rgba(176,141,87,.25);outline-offset:12px;background:#22324a}
+.hero .slot::before,.banner .slot::before{color:#9fb0c4}
+@media(max-width:860px){.hero .slot{aspect-ratio:4/3;order:-1;outline:0}}
+.banner{padding:3.5rem 0}
+.banner .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
+.banner .slot{aspect-ratio:4/3;background:#22324a}
+@media(max-width:860px){.banner .wrap{grid-template-columns:1fr;gap:1.8rem}}
+.split .slot{aspect-ratio:4/5}
+.split.reverse .slot{order:2}
+@media(max-width:860px){.split.reverse .slot{order:0}}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+.gallery .slot{aspect-ratio:3/4}
+.cap{font-size:.92rem;margin-top:.5rem;color:var(--muted)}
+@media(max-width:860px){.gallery{grid-template-columns:1fr 1fr}}
+.vcard .slot{aspect-ratio:4/3}
+.vcard h3{margin-top:1rem}
+.vcard p{color:#c9cfd6;font-size:.98rem}
+.services.three{grid-template-columns:repeat(3,1fr)}
+.services.four{grid-template-columns:repeat(4,1fr)}
+.service.has-img{padding:0}
+.service.has-img .slot{aspect-ratio:4/5}
+.service.has-img .body{padding:1.4rem}
+.meta{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.88rem;color:var(--muted);margin-top:.8rem}
+.meta strong{color:var(--ink)}
+@media(max-width:1000px){.services.four{grid-template-columns:1fr 1fr}.services.three{grid-template-columns:1fr}}
+@media(max-width:560px){.services.four{grid-template-columns:1fr}}
+.steps.three{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.steps.three{grid-template-columns:1fr}.steps.three .step{border-right:0;padding-left:0}}
+section.contact{background:var(--white)}
+.contact-list a{border-bottom:1px solid var(--thread)}
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.8rem}
+
+/* ===== blog ===== */
+.pcard{background:var(--white);display:flex;flex-direction:column;color:inherit}
+.pcard .slot{aspect-ratio:4/3}
+.pcard .info{padding:1.2rem 1.3rem 1.5rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.pcard .kicker,.article .kicker{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--thread);font-weight:500}
+.pcard h3{margin:0}
+.pcard p{color:var(--muted);font-size:.95rem;line-height:1.55}
+.pcard .more{margin-top:auto;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--thread);align-self:flex-start;padding-bottom:2px}
+.pcard:hover h3{color:var(--wine)}
+.article{max-width:760px;margin:0 auto}
+.article h1{font-size:clamp(2.1rem,4.5vw,3.2rem);margin:.6rem 0 .8rem}
+.article .by{color:var(--muted);font-size:.95rem;margin-bottom:1.6rem}
+.article .slot{aspect-ratio:16/9;margin-bottom:2rem}
+.article p{margin-bottom:1.3rem;font-size:1.1rem;max-width:none}
+.back{display:inline-block;margin-bottom:1.5rem;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--thread)}
+textarea.tall{min-height:260px}
+
+/* ===== rich text (blog posts + editor) ===== */
+.rt{font-size:1.1rem}
+.rt p{margin:0 0 1.2rem;max-width:none;font-size:1.1rem}
+.rt h2,.rt h3,.rt h4{margin:2rem 0 .8rem}
+.rt h2{font-size:1.8rem}.rt h3{font-size:1.45rem}.rt h4{font-size:1.2rem}
+.rt ul,.rt ol{margin:0 0 1.3rem 1.4rem}
+.rt li{margin-bottom:.4rem}
+.rt blockquote{margin:1.6rem 0;padding:.4rem 0 .4rem 1.3rem;border-left:3px solid var(--thread);color:var(--muted);font-style:italic}
+.rt a{color:var(--wine);text-decoration:underline}
+.rt img{max-width:100%;height:auto;margin:1.2rem 0}
+.rt table{border-collapse:collapse;width:100%;margin:1.4rem 0;font-size:.98rem}
+.rt td,.rt th{border:1px solid var(--stripe);padding:.55rem .7rem;text-align:left;vertical-align:top}
+.rt th{background:var(--chalk)}
+.rt hr{border:0;border-top:1px solid var(--stripe);margin:2rem 0}
+.etools{display:flex;flex-wrap:wrap;gap:.3rem;padding:.5rem;background:var(--chalk);border:1px solid var(--stripe);border-bottom:0}
+.etools button{min-width:36px;height:34px;padding:0 .6rem;border:1px solid var(--stripe);background:#fff;font:inherit;font-size:.9rem;cursor:pointer}
+.etools button:hover{background:var(--ink);color:var(--chalk);border-color:var(--ink)}
+.etools .sep{width:1px;background:var(--stripe);margin:0 .2rem}
+.editor{min-height:340px;max-height:70vh;overflow:auto;padding:1rem 1.2rem;border:1px solid var(--stripe);background:#fff;outline:0}
+.editor:focus{border-color:var(--thread)}
+.editor:empty::before{content:attr(data-placeholder);color:var(--muted)}
+
+</style>
+</head>
+<!--
+  HOW TO CHANGE A PHOTO
+  Every photo on this page is a line like:  <img src="https://..." alt="...">
+  Replace the link inside src="" with your own file, for example  src="images/hero.jpg"
+  (put your photos in a folder called "images" next to this file), or paste any image link.
+  Each photo has a small comment above it that starts with the word IMAGE, so you can search for it.
+-->
+<body data-page="blogger">
+<header id="site-header"></header>
+<main>
+<div class="banner" style="padding:4.5rem 0 3.5rem"><div class="wrap" style="display:block"><h1>Blogger</h1><p>Write, edit and publish posts for the blog.</p></div></div>
+<section>
+<div class="wrap">
+  <div id="demo-flag" class="demo-flag" hidden><strong>Demo mode.</strong> Posts you write are saved in this browser only. To publish them online for every visitor, connect Supabase in the config at the top of the page (see the setup file).</div>
+  <div id="msg"></div>
+
+  <div id="login" class="admin-box" hidden style="max-width:460px">
+    <h2>Sign in</h2>
+    <form class="form one" id="login-form">
+      <label>Email<input type="email" id="email" required autocomplete="username"></label>
+      <label>Password<input type="password" id="password" required autocomplete="current-password"></label>
+      <div><button class="btn" type="submit">Sign in</button></div>
+    </form>
+  </div>
+
+  <div id="panel" hidden>
+    <p style="margin-bottom:1.5rem" id="signout-wrap" hidden><button class="btn ghost small" id="signout">Sign out</button></p>
+    <div class="admin-grid">
+      <div class="admin-box">
+        <h2 id="form-title">New post</h2>
+        <form class="form one" id="pform">
+          <input type="hidden" id="p-id">
+          <label>Title<input id="p-title" required></label>
+          <label>Category<input id="p-cat" list="cats" placeholder="Style, Guides, Care..."><datalist id="cats"></datalist></label>
+          <label>Author<input id="p-author" placeholder="Kamieo Kreations"></label>
+          <label>Short summary (shows on the blog list)<textarea id="p-excerpt" maxlength="220"></textarea></label>
+          <div>
+            <div style="font-size:.9rem;letter-spacing:.04em;margin-bottom:.35rem">Post</div>
+            <div class="etools" id="etools">
+              <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+              <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
+              <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+              <button type="button" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+              <span class="sep"></span>
+              <button type="button" data-block="H2" title="Big heading">H2</button>
+              <button type="button" data-block="H3" title="Small heading">H3</button>
+              <button type="button" data-block="P" title="Normal text">Text</button>
+              <span class="sep"></span>
+              <button type="button" data-cmd="insertUnorderedList" title="Bullet list">&bull; List</button>
+              <button type="button" data-cmd="insertOrderedList" title="Numbered list">1. List</button>
+              <button type="button" data-block="BLOCKQUOTE" title="Quote">&ldquo; Quote</button>
+              <span class="sep"></span>
+              <button type="button" data-cmd="justifyLeft" title="Align left">Left</button>
+              <button type="button" data-cmd="justifyCenter" title="Centre">Centre</button>
+              <button type="button" data-cmd="justifyRight" title="Align right">Right</button>
+              <span class="sep"></span>
+              <button type="button" id="e-link" title="Add link">Link</button>
+              <button type="button" id="e-img" title="Add picture">Picture</button>
+              <button type="button" data-cmd="removeFormat" title="Clear formatting">Clear</button>
+              <button type="button" data-cmd="undo" title="Undo">Undo</button>
+              <button type="button" data-cmd="redo" title="Redo">Redo</button>
+            </div>
+            <div class="editor rt" id="p-content" contenteditable="true" data-placeholder="Write here, or paste from Word or Google Docs. The formatting stays."></div>
+            <input type="file" id="e-imgfile" accept="image/*" hidden>
+          </div>
+          <label>Cover photo<input id="p-file" type="file" accept="image/*"></label>
+          <label>Or paste an image link<input id="p-url" placeholder="https://..."></label>
+          <div id="p-preview" class="thumb" style="width:120px;height:80px;background:#D9D8D3 center/cover" hidden></div>
+          <label style="flex-direction:row;align-items:center;gap:.6rem"><input type="checkbox" id="p-pub" checked style="width:auto"> Published (untick to keep as a draft)</label>
+          <div style="display:flex;gap:.8rem;flex-wrap:wrap">
+            <button class="btn" type="submit" id="p-save">Save post</button>
+            <button class="btn ghost" type="button" id="p-cancel" hidden>Cancel edit</button>
+          </div>
+        </form>
+      </div>
+      <div class="admin-box">
+        <h2>Your posts</h2>
+        <div class="plist" id="plist"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+</main>
+<footer id="site-footer"></footer>
+<script>
+/* ===== EDIT THIS FILE ONLY ===== */
+window.SITE = {
+  brand: "Kamieo",
+  tagline: "Kreations",
+  whatsapp: "2348028879785",          // client's WhatsApp number, country code first, no + or spaces
+  email: "kamieokreations@gmail.com",
+  address: "House 20, Road 111, Efab Estate, Apo-Dutse, near Cedacrest Hospital, Abuja, Nigeria",
+  instagram: "https://www.instagram.com/kamieokreations",
+  facebook: "https://www.facebook.com/share/1CMcw8c7Ti/",
+  currency: "₦",
+
+  // Leave both empty to run in DEMO mode (products saved in this browser only).
+  // Fill both to save products online so every visitor sees them.
+  supabaseUrl: "",                    // e.g. https://abcdxyz.supabase.co
+  supabaseKey: ""                     // the "anon public" key
+};
+
+</script>
+<script>
+(function () {
+  const S = window.SITE;
+  const online = !!(S.supabaseUrl && S.supabaseKey);
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = (t) => String(t == null ? "" : t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const money = (n) => S.currency + Number(n || 0).toLocaleString("en-NG");
+  const wa = (text) => "https://wa.me/" + S.whatsapp + "?text=" + encodeURIComponent(text);
+
+  /* ---------- header & footer ---------- */
+  const pages = [
+    ["index.html", "Home", "home"],
+    ["about.html", "About", "about"],
+    ["bespoke.html", "Ikenna Bespoke", "bespoke"],
+    ["ready-to-wear.html", "Ready to wear", "rtw"],
+    ["blog.html", "Blog", "blog"]
+  ];
+  function buildChrome() {
+    const cur = document.body.dataset.page;
+    const h = $("#site-header");
+    if (h) {
+      h.className = "site-header";
+      h.innerHTML = `<div class="wrap">
+        <a class="logo" href="index.html" aria-label="${esc(S.brand)} ${esc(S.tagline)} home">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCADHAJYDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5n/4ZN/aH/wCiVa3/AOQv/jlH/DJv7Q//AESrW/8AyF/8cr9lNtG2gD8a/wDhk39of/olWt/+Qv8A45R/wyb+0P8A9Eq1v/yF/wDHK/ZTbRtoA/Gv/hk39of/AKJVrf8A5C/+OUv/AAyZ+0R/0SvW/wDyD/8AHK/ZPbRtoA/Gz/hkz9oj/olet/8AkH/45R/wyZ+0R/0SvW//ACD/APHK/ZPbRtoA/Gz/AIZM/aI/6JXrf/kH/wCOUf8ADJn7RH/RK9b/APIP/wAcr9k9tG2gD8bP+GTP2iP+iV63/wCQf/jlH/DJn7RH/RK9b/8AIP8A8cr9k9tG2gD8bP8Ahkz9oj/olet/+Qf/AI5R/wAMmftEf9Er1v8A8g//AByv2T20baAPxs/4ZM/aI/6JXrf/AJB/+OUf8MmftEf9Er1v/wAg/wDxyv2T20fJ7UAfjZ/wyZ+0R/0SvW//ACD/APHKP+GTP2iP+iV63/5B/wDjlfsQt9B9r+z529P16fnVvbQB+Nn/AAyZ+0R/0SvW/wDyD/8AHKK/ZPbRQA6iiigAooooAKKKKACiiigAooooAKKKKACiikzQAtZd7qMdtZzXc/8Aqo/uqnWT0H1J6VK8n2qQbP8AVf8AoVYd40mq635EH/HvbN/31N/9j0+ufSgCbQbOSe6a/ux+93Fm9N57D2UcCulqC1hS3tUgTotT0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFNZttAAzbaoSSfa5fL/5Y/8AoVLPJ5/T7n/oVNmmgsrR7if5EjXcz0AUdUvvssKWdp/x8T5WP/pmB1f8O3virGi6b9kh8z/Z2r9Ko6Tbz3uoPqV2n75v4P8Anmg+6n9T7101ABRRRQAUUYFFKwBRRRTAKKKKACiiigAooooAKKKKACqEkn2iX/YX/wAepbibzf3afdpsa0ASKtc9cSSa3raQQf8AHpbSfhNIO/8Aup2/2vpUutahcTXf9jWEn+kSL+/lT/ljGfT/AGm7egy3pWvpmmwWFokccYQ7dvy/wj0oAtW1ulvbCOPpU9FFABRRRQAdzRR3NFBLCiiigoKKKKACiiigAooooAKyL69jaJz5my3j+8/972/z16U+9unll+y2/wD20f8Au+31/lXO+IrHU737DYabHshbPmXH8Nv77epb+76UAZsepa74i1t7DSf9BtI9nn3X/PHndsHq5/iHRRxXT61qw0u0SC3TztQufktrf39T/sr3/Lqaq3F5pvg3wzD+7/6ZW1qnzPcSHogz3P6CneHdGuxK2u67sfU7n+D+C3TtGvsP1PP0kC9oWj/2fab55Hmu5W82WV+rOep/+t2HFbdFFUAUUUUAFFFFAB3NFHc0UEsKKKKCgooooAKKQ9Kr3E8VtaPPPIiRKu5mfgKBQ3bcEr6E2+sbU9Zt7XdB56RPs3SSu21IV9Sen0rxzxT45n8a+If7J0md4dEhb97Knytdbf8A2WuV+KH9tJ4Z8F2En2rULS9j8+4/f7PtU+BjfI3A+Xufu15FPNoVef2Suo9ejZ7DyapT5Pauzlrbrbc+g9L1DTdQh8zTb+1vkX7z28of88VNqmrWGhaTNqV/Jshj/wCBMxPRAO5J6V8+eAPA994au9J8bWms/wCk6tewx/YreT/RPJb76QL951A/jfr97bXvlxon9r+JrS7vPnsbD97DF/z0nP8AGf8AdHA967qFScrqa1R5+IpQg1Km9H33KHh3R77VNW/4SvxJB5Vxt22Fh/DZxn/2du5/Cu2oorpOcKKKKACiiigAooooAO5oo7miglhRRRQUFFFFADTjHWvnv42+Mr9/EqeD7STyrRI0kudv/LQtyB9BX0ExA5r4++IOpJq3xo1i4R/NiW48pf8AgIC/0r5firFSoYRRg7OTsfVcIYSGIx15q6im/n0Oj8J28aRP/wBcz/Kvcrrw3pOu+Dk0bWrGG4tPLT5P7uB1Hoa8g8L28j2n7uN3dtiqqfM3JH9K6zx98Sv7C09NB8PbJdbuV/1v3ls0P8Z/2j/Cv4n35slqUsJhJVKvwnXn9OtisdCnQ+L8jOlt/BPw+11NC8L2s8usSf6y68z7R/ZqN/HzwD/s1r6J8RxpuoaD4ev9Fnt7e5b7D/aTy/J9qVGyvTu42clSXcYWvPNH0uP+w77z7h/NuYX866fLPl+C/rnvW5pegxy6jF9rguteuP3HmP8APEkmx9kr+SrbdytslU89a9XJsV9Y53y2XQ8bOsHHCuEea8urPa11F/7W8j/llJGdv++vUf8AfPI+hptlrcdxqtzps42zQt2VtjD6kdR3H0PQ1z2haB4kFpaf2ncbPJjh+Tdu+eIshP8A20jPPvV+90aPTdPWfz3d02J+QK/+g7f++Aa9w8E62iuM0jxbdQi1g8SW0drJPN5EcsUm9CT93d6bu1dnQUFFFFABRRRQAdzRR3ooJYUUU13CLk0FAzbRXK+IfiB4b8Oh0vb4PMv/ACwg+d/8B+deceO/ird3d3LoXhf+95TXSffk/wBz0HvUPhv4NXmoRf2l4rvni8z5/ssX3/xPb9TXz9fNqtWbo4GPM+r6I+goZRSo01Xx8+VPZLdlPxj8bbzUNOlsfDlr9iVvl+1StmTHsBwPrzXkem2fnagn8fzbmeva/HnwgsdO8KXWteG55kuLOMztb3Db0mVeT9DjpXlHh28gvbtI/wCOvic6hjfrEPrr9LbH3mQVMD9WnLArbe+57N4BtU+3Wrv92FXuZP8AgI/xNeLaDN/bGrX2tT/629u5rnf/AL8hI/TFeyvdf8I/8HfFeu/88dOeCL/fZP8A4p1ryjwfp8kWkxfu/wDVqF/IV35lHloUaPe7Zw5TLnr4iu+ll/mej+HYd/lfu9+6RPk/GvULLVY7KFI47WFE/uou2uE8FR79f0//AK7bvyRq9Xm0y0nHMdfVZDG1FnyHEE74iw+01GC7GIz8/wDdrK8Xt/xTuP70i/1p8mg+V+8gn2PTlZ9Qhlsbv5LiH+vQ17p4B4LrVv4o0/wdq0+ralDdwrJDLadd8JDnjNfRlhMbjS7aeT78kSu34jNeIeOND1rQvh7dwatrv9ofabmGKFPKP885/wD1V7fYRCHS7aH+5Eq/kKALVFFFABRRRQAUUUUAJ1ry34u+MzouiDRbGT/Tb372zrHH/i3SvTJ5Y4bVpXfaqruZvYV8z2qz/Ef4w+Y+/wAqSb/v3Gv/ANj+prxM6xU6dNUaXxT0PcyPCQq1HXrfBDV/odt8IvA2yL/hKNWg/eyf8e6f3f8Ab/w/OvZV6VBawR2kCQQoEijXaq+gFcl8TvGcPgrwRcaiebuT91ar/wBND3+i9a3w1Cll2F9NWzlxFetmmL01cnZI8z+O/wAT/ssMvgXw+++7uF23sqf8s0P/ACz+p7+g4ryPwzbyW+uadH/H5gWsyzhkuLubVr+R5bidjKzv97mu4+HujvrXje3T+BW/nX5vjcdPNMbH10R+qYTAU8ny+S62u33Z13xgu3034NeHvC0Z/wBL8Qamm8f9M1/fN/KMVzrahHZaI9paf6qD5d//AD0Pc1meOPF8Pjr45XFxp0m/RPDELafaS/wzXDf6xx9MbR/uVmX1x/xLvI/vV1Z7i+TE+zh9lWOHIMHL2ClP7Tu/n/wD1P4LapJqWtpBPJve2Zm/Aqa+gcV8vfAa48r4mPB/z0tz+n/66+oB0r6zhWt7TApvufHcXUvZ5g0trIdWNqMW2/H7ww/aozbeanDK3Vce/XFbNUNTsI9S0uW0k/i+6/dSOQfwNfTHzBwmvaT9o8J2Nhcas+oI13H5cr4bdj1avSFryK61Swt9+k3/APxLNRsrmO5+6fKuNpxnA459e3XpXoNh4t8PaiH+yanDK8f+tiRt7Qn0cDOD9aAN6iqH9r6d/wA9/wDx01zuteK7e3u/skd9BafuJJ/tEzbUUIVU5PbmROOtAHYZpa82TTbjUBFqV34hgfT5Nn72LLmTeRtw+7bjn0rtdMjFoZbBN+yDZtd23btw/wARQBpnrRQetFAHFfFDVP7K+GWoOnyvMotl/wCBnB/TNcZ8CtH2affa1InzSN5cf8z+mytP47SbPh7D/wBfY/8AQWrc+FNn9l+Gdh/01Z5P1x/Svn6kPa5pG+0Vc+hhP2OUO285fkds1fKvxx8Qf8JD8Uf7HjffaaYvl/8AA+rfrx+FfUWoXAtdNuLt/uQxtI3/AAEZr4da+k1LW9Q1aeTe88zyt+JzXn8YYv2WGVNP4j1OCMEqmKlXl9haerLG3/lnVfx54s1bwV4IsdM0K7+yanrHmeZKn347f7vyf3N2eta+j2f23UIoP7zV5v4hvv8AhOPjmkcHz2MFyljD/wBc4uv5tXxmTQtN1+x97mTVW1Lp1PVfhp8MPEM/w4t5NNsPN3fvZPmCfO319FxVDxXoniTwx/yGdKubRG+7K67k/Bh8tfXPhLSYdH8HafYRpjy4QzfVuTV3VtJsNZ0ifTdStUuLWZdkkT8hga+vqcK0sRS9pzPnevkfC0uMatDENcidNP52PkT4M6t9n+MGlZ/5aM0X519lr0r4o0jSH8J/tEJow6Wt/wCWv+7nj9K+1k5Arp4XhKjCpQl0ZlxpOFbEUq8NpRJKKKK+rPjDhPiL4I/4SjQ5XsfkvlXC/wC0PSuD8L/2lp+nJd6lBsmby9PuX8r/AFZjaQ/P9fMFe71k3WmATS31pGnmuv7yL+GbHr7+9A7nmK69BZaTq0/n7/LnmuY03f6yPyln+T/gLVwF94ZneLWdNj+y6ZaTa1dahbeTefdj2W1y3zR/NDJ+5dlb5vvg11HjCTTbe7u4I7FLSXaVWL/nnvj8lv8Axw8Vv6Xp/hf7XcR31i9xcbfP2bj/ABw+R/48i4/WgRV8N3X9lfDj/hGruT7RcWH7qCWH7kkaLHOvp/BJjdj5sbq9H0OaS7ur2+e1eHzXG3f/ALOR+X+NcP4eGsnVfPgsNPt7Rm/0a38ve2xYwvznrnZha9HttQR5fInHlTf3P730qSS+aKDRVFHnXxl059Q+F135af8AHswl/mP61f8AhbeR3fw00/y/+WW6P9c/1rq7+yg1DT5rG6TdFNGY3X2NeJ6Drk/wo8TXfh/XI5n0qRt0Nwv9z+F8fT5T7ivFxTWGxccRP4WrN9ux7WFi8Xg5YWGs4vmS79z1Px5c/Zfhlr0/92xm/wDQCK+JdNk/9CNe9fFX4yeH9T8E3fh7w2817Ldr5U0vllEhTPv1JrxPQdHu7qW3tIIHluJP4EXca+O4txdLFzhTovmt2PuuDcHUwWHqVMRHlu+umxe1DUv+Ef8AAd7qUf8Ax93Km2t/qer/AICvOfh3b/ZPE9pdyf8ALCf5vxrqPEF1/a0yR/8ALvB+6jT+Z+pqrpdnJZfvI/4vvV4+HxUKFH2Z9RXwt6d+sj708P30Go+HrK+gxskhT+X+NaMnAzXyr4I+Juu+FbP7JGUurX73kXGf0I5FbfiL4s+IfFVg+lWBttJt5vlklt2aWZh3AJ2ha+1ocVYP2Cu/e7H5fX4TxirtRS5L7+Ri6Vbnxl+1RqGpWPz2SXn+t/3eP6V9WKOMV5P8HPCNvpGkf2klvs3fLH/U16yDkV6WR0Gqcq895u5w5/iY1K0aNPamlEdRRRXuHghRRRQBwfxH8GR+I9EN9aR/8TO0/exOn3pNvOz/AA968qk8ZWGiaS93qUl0k0m9p5UgMu1/uKTj+Dd8ik4+4frX0jXhXxY8OPo2pN4gtI0/sy8Oy7Z/9TayMuwSTD+KHbu+X7u88+wBk+B/ih9olh0nxD+6mn8yKO98ryGuPuhOE3pFuVvmy3GY/wCLpz2l6l4w+FnxIh8J6152reG9Suf9AvfveXn+Pd2YfxL+NZ+k+F/tHjGxjku7qXQ/+Pz+yr6Uolq6n9xJ8hC5kf5wjhm969a03Up9Q1C4sPskN3p8Hyz+d8+6b+5jp8o+8fXj1rGtS57eQRkehaHrDT2pt70gTx/xnpIPX60VzuiyR+JlmlsIrmBLRzbmSRfLV8f3fUUVqguegisTxB4W0bxLp/2XVrRJU/hfo6fQ9q2xnHIoqalONSLhNXRVOpKElODszxuT9n3RPtfmJrd4kX9zYv8AP/61d14Y8AeHvCUB/su0BuG+/czfPI349vwrqaWuChlGEoS56dNJnfiM3xuJh7OrUbR8u/Ff4RalpXiC78Q+HrSS70y5YyyQRcm2c9eP7v8AKvLYY/Kr7yZQRz0rBvfBXhPUpvtF94f0+aX++8IzXzWbcIfWpuph58t+j2Pqcq41qYWiqOIhzJbPqfIFis9xsgjj3u38CfM1eueA/hJf3d3FqWvxvZWi/MsH/LSX/wCJH617Zpnhjw/o/wDyC9Gs7U/3oogp/PrWttHTFGV8G0sPJVMRLma6dDDNOMauJi6eHjyJ9d2Q28EdtAkEEaJFH8qqv8IqxQKK+1ilFWR8ZuFFFFUAUUUUAFV7i2t7y0lt7qFJYZVKSRyruVlPBBB7EVYooA8M1/4U614duvtHgzF7pO/zYtNlP76xkxtDwk8MEX7qv93tU/h3w1d61af2TcQXtpp6/et5t8TRj/eGGJ7k5+ZyW9K9sooApabptppenRafYw+TbwrtRaKu0UARebR5tFFAB5tHm0UUAHm0ebRRQAebR5tFFAB5tHm0UUAHm0ebRRQAebR5tFFAB5tHm0UUAHm0ebRRQAebRRRQB//Z" alt="">
+          <span class="logo-text"><strong>${esc(S.brand).toUpperCase()}</strong><span>${esc(S.tagline).toUpperCase()}</span></span>
+        </a>
+        <button class="menu-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+        <nav class="nav" id="nav">
+          ${pages.map((p) => `<a href="${p[0]}" class="${cur === p[2] ? "active" : ""}">${p[1]}</a>`).join("")}
+          <a href="book.html" class="btn-nav ${cur === "book" ? "active" : ""}">Book appointment</a>
+          <button class="cart-btn" id="open-cart" aria-label="Open cart">Cart <span class="cart-count" id="cart-count">0</span></button>
+        </nav></div>`;
+      const t = $(".menu-toggle", h);
+      t.addEventListener("click", () => {
+        const o = $("#nav").classList.toggle("open");
+        t.setAttribute("aria-expanded", o);
+      });
+    }
+    const f = $("#site-footer");
+    if (f) {
+      f.className = "site-footer";
+      f.innerHTML = `<div class="wrap"><div class="foot">
+        <div><h4>${esc(S.brand)} ${esc(S.tagline)}</h4><p>A fashion house in Abuja. Tailored clothing and ready-to-wear pieces.</p></div>
+        <div><h4>Pages</h4><ul>${pages.map((p) => `<li><a href="${p[0]}">${p[1]}</a></li>`).join("")}<li><a href="book.html">Book appointment</a></li><li><a href="index.html#contact">Contact us</a></li></ul></div>
+        <div><h4>Contact</h4><ul>
+          <li><a href="${wa("Hello, I have an enquiry.")}">WhatsApp</a></li>
+          <li><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></li>
+          <li><a href="${esc(S.instagram)}" target="_blank" rel="noopener">Instagram</a></li>
+          <li>${esc(S.address)}</li></ul></div>
+      </div><div class="copy">&copy; ${new Date().getFullYear()} ${esc(S.brand)} ${esc(S.tagline)}. All rights reserved.</div></div>`;
+    }
+  }
+
+  /* ---------- products ---------- */
+  const SAMPLE = [
+    { id: "s1", name: "Navy Two-Piece Suit", price: 185000, category: "Suits", sizes: "S,M,L,XL", description: "Fully lined, slim cut, ready to wear.", image_url: "https://kamieokreations.com/wp-content/uploads/2026/07/kk-19.png", in_stock: true },
+    { id: "s2", name: "Charcoal Senator Set", price: 95000, category: "Native wear", sizes: "M,L,XL,XXL", description: "Clean senator set with fine hand finishing.", image_url: "https://kamieokreations.com/wp-content/uploads/2026/07/kk-07.jpg", in_stock: true },
+    { id: "s3", name: "White Tailored Shirt", price: 38000, category: "Shirts", sizes: "S,M,L,XL", description: "Crisp cotton, structured collar.", image_url: "https://kamieokreations.com/wp-content/uploads/2026/07/kk-11.png", in_stock: true },
+    { id: "s4", name: "Black Trousers", price: 45000, category: "Trousers", sizes: "30,32,34,36,38", description: "High-waisted, pressed crease.", image_url: "https://kamieokreations.com/wp-content/uploads/2026/07/kk-18.jpg", in_stock: true },
+    { id: "s5", name: "Wine Blazer", price: 120000, category: "Suits", sizes: "S,M,L,XL", description: "Single-breasted blazer in soft wool blend.", image_url: "https://kamieokreations.com/wp-content/uploads/2026/07/kk-13.png", in_stock: true },
+    { id: "s6", name: "Agbada Three-Piece", price: 220000, category: "Native wear", sizes: "L,XL,XXL", description: "Embroidered neckline, wide flowing sleeves.", image_url: "https://kamieokreations.com/wp-content/uploads/2026/07/kk-22.png", in_stock: false }
+  ];
+
+  const KK = "https://kamieokreations.com/wp-content/uploads/2026/07/";
+  const PK = "ik_posts_v1";
+  const POSTS_SAMPLE = [
+    { id: "b1", title: "What to expect at your first fitting", category: "Guides", author: "Kamieo Kreations", published: true, created_at: "2026-10-01T09:00:00Z", image_url: KK + "kk-19.png",
+      excerpt: "A simple walk through your first visit, from measurements to the final try-on.",
+      content: "Your first fitting is a conversation. We talk about the occasion, the style you like and how you want the clothes to feel.\n\nThen we take your measurements. It only takes a few minutes, and it is the most important step because every cut starts from those numbers.\n\nBring a photo of anything you like. It helps us understand your taste faster." },
+    { id: "b2", title: "How to choose fabric for a native outfit", category: "Style", author: "Kamieo Kreations", published: true, created_at: "2026-09-24T09:00:00Z", image_url: KK + "kk-13.png",
+      excerpt: "Weight, colour and finish: three things to think about before you pick a cloth.",
+      content: "Start with the weather and the event. A heavy fabric looks rich but can be tiring in the heat, so think about how long you will be wearing it.\n\nNext, think about colour. Deep tones suit formal events, while lighter shades feel relaxed and fresh.\n\nFinally, touch the cloth. Good fabric should feel good on your skin." },
+    { id: "b3", title: "Caring for your tailored clothes", category: "Care", author: "Kamieo Kreations", published: true, created_at: "2026-09-15T09:00:00Z", image_url: KK + "kk-11.png",
+      excerpt: "Small habits that keep a suit or a native set looking sharp for years.",
+      content: "Hang your clothes on a proper hanger and let them rest a day between wears.\n\nBrush wool gently instead of washing it often. Dry clean only when you really need to.\n\nSteam out small creases rather than pressing hard, so the fabric keeps its shape." }
+  ];
+  const LS = "ik_products_v2";
+  const hdr = (token) => ({ apikey: S.supabaseKey, Authorization: "Bearer " + (token || S.supabaseKey), "Content-Type": "application/json" });
+
+  const API = {
+    online,
+    async list() {
+      if (online) {
+        const r = await fetch(S.supabaseUrl + "/rest/v1/products?select=*&order=created_at.desc", { headers: hdr() });
+        if (!r.ok) throw new Error("Could not load products");
+        return r.json();
+      }
+      let d = localStorage.getItem(LS);
+      if (!d) { localStorage.setItem(LS, JSON.stringify(SAMPLE)); return SAMPLE.slice(); }
+      return JSON.parse(d);
+    },
+    async save(p, token) {
+      if (online) {
+        const body = { name: p.name, price: p.price, category: p.category, sizes: p.sizes, description: p.description, image_url: p.image_url, in_stock: p.in_stock };
+        const url = S.supabaseUrl + "/rest/v1/products" + (p.id ? "?id=eq." + encodeURIComponent(p.id) : "");
+        const r = await fetch(url, { method: p.id ? "PATCH" : "POST", headers: { ...hdr(token), Prefer: "return=minimal" }, body: JSON.stringify(body) });
+        if (!r.ok) throw new Error("Save failed (" + r.status + "). Are you signed in?");
+        return;
+      }
+      const all = await this.list();
+      if (p.id) { const i = all.findIndex((x) => x.id === p.id); if (i > -1) all[i] = p; }
+      else { p.id = "p" + Date.now(); all.unshift(p); }
+      localStorage.setItem(LS, JSON.stringify(all));
+    },
+    async remove(id, token) {
+      if (online) {
+        const r = await fetch(S.supabaseUrl + "/rest/v1/products?id=eq." + encodeURIComponent(id), { method: "DELETE", headers: hdr(token) });
+        if (!r.ok) throw new Error("Delete failed (" + r.status + ")");
+        return;
+      }
+      const all = (await this.list()).filter((x) => x.id !== id);
+      localStorage.setItem(LS, JSON.stringify(all));
+    },
+    async listPosts(all, token) {
+      if (online) {
+        const r = await fetch(S.supabaseUrl + "/rest/v1/posts?select=*&order=created_at.desc" + (all ? "" : "&published=eq.true"), { headers: hdr(all ? token : undefined) });
+        if (!r.ok) throw new Error("Could not load posts");
+        return r.json();
+      }
+      let d = localStorage.getItem(PK);
+      if (!d) { localStorage.setItem(PK, JSON.stringify(POSTS_SAMPLE)); d = JSON.stringify(POSTS_SAMPLE); }
+      const list = JSON.parse(d);
+      return all ? list : list.filter((p) => p.published !== false);
+    },
+    async savePost(p, token) {
+      if (online) {
+        const body = { title: p.title, category: p.category, author: p.author, excerpt: p.excerpt, content: p.content, image_url: p.image_url, published: p.published };
+        const url = S.supabaseUrl + "/rest/v1/posts" + (p.id ? "?id=eq." + encodeURIComponent(p.id) : "");
+        const r = await fetch(url, { method: p.id ? "PATCH" : "POST", headers: { ...hdr(token), Prefer: "return=minimal" }, body: JSON.stringify(body) });
+        if (!r.ok) throw new Error("Save failed (" + r.status + "). Are you signed in?");
+        return;
+      }
+      const all = await this.listPosts(true);
+      if (p.id) { const i = all.findIndex((x) => x.id === p.id); if (i > -1) all[i] = { ...all[i], ...p }; }
+      else { p.id = "p" + Date.now(); p.created_at = new Date().toISOString(); all.unshift(p); }
+      localStorage.setItem(PK, JSON.stringify(all));
+    },
+    async removePost(id, token) {
+      if (online) {
+        const r = await fetch(S.supabaseUrl + "/rest/v1/posts?id=eq." + encodeURIComponent(id), { method: "DELETE", headers: hdr(token) });
+        if (!r.ok) throw new Error("Delete failed (" + r.status + ")");
+        return;
+      }
+      const all = (await this.listPosts(true)).filter((x) => x.id !== id);
+      localStorage.setItem(PK, JSON.stringify(all));
+    },
+    async login(email, password) {
+      const r = await fetch(S.supabaseUrl + "/auth/v1/token?grant_type=password", { method: "POST", headers: { apikey: S.supabaseKey, "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error_description || d.msg || "Wrong email or password");
+      return d.access_token;
+    },
+    async upload(file, token) {
+      const name = Date.now() + "-" + file.name.replace(/[^a-z0-9.\-_]/gi, "_");
+      if (online) {
+        const r = await fetch(S.supabaseUrl + "/storage/v1/object/products/" + name, { method: "POST", headers: { apikey: S.supabaseKey, Authorization: "Bearer " + token, "Content-Type": file.type }, body: file });
+        if (!r.ok) throw new Error("Image upload failed (" + r.status + ")");
+        return S.supabaseUrl + "/storage/v1/object/public/products/" + name;
+      }
+      // demo mode: shrink the image and keep it in the browser
+      return new Promise((res, rej) => {
+        const img = new Image();
+        img.onload = () => {
+          const max = 700, k = Math.min(1, max / Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = img.width * k; c.height = img.height * k;
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          res(c.toDataURL("image/jpeg", 0.8));
+        };
+        img.onerror = () => rej(new Error("Could not read that image"));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+  };
+
+  /* ---------- rich text helpers (blog posts are stored as safe HTML) ---------- */
+  const T_ALLOW = { P:1,BR:1,STRONG:1,B:1,EM:1,I:1,U:1,S:1,STRIKE:1,H2:1,H3:1,H4:1,UL:1,OL:1,LI:1,BLOCKQUOTE:1,A:1,IMG:1,TABLE:1,THEAD:1,TBODY:1,TR:1,TD:1,TH:1,SPAN:1,DIV:1,HR:1,SUB:1,SUP:1 };
+  const T_DROP = { SCRIPT:1,STYLE:1,IFRAME:1,OBJECT:1,EMBED:1,FORM:1,INPUT:1,BUTTON:1,TEXTAREA:1,SELECT:1,NOSCRIPT:1,LINK:1,META:1,TITLE:1,HEAD:1,SVG:1,MATH:1,VIDEO:1,AUDIO:1,CANVAS:1 };
+  const T_MAP = { H1: "H2", H5: "H4", H6: "H4" };
+  const COLOR = /^(#[0-9a-f]{3,8}|rgba?\([\d\s,.%]+\)|[a-z]+)$/i;
+  function cleanStyle(st) {
+    const out = [];
+    String(st || "").split(";").forEach((d) => {
+      const i = d.indexOf(":"); if (i < 0) return;
+      const k = d.slice(0, i).trim().toLowerCase(), v = d.slice(i + 1).trim();
+      if (k === "text-align" && /^(left|right|center|justify)$/i.test(v)) out.push(k + ":" + v);
+      else if ((k === "color" || k === "background-color") && COLOR.test(v) && !/^(windowtext|transparent|inherit|initial)$/i.test(v)) out.push(k + ":" + v);
+      else if (k === "font-weight" && /^(normal|bold|[1-9]00)$/i.test(v)) out.push(k + ":" + v);
+      else if (k === "font-style" && /^(italic|normal)$/i.test(v)) out.push(k + ":" + v);
+      else if (k === "text-decoration" && /^(underline|line-through|none)$/i.test(v)) out.push(k + ":" + v);
+    });
+    return out.join(";");
+  }
+  function sanitize(html) {
+    const doc = new DOMParser().parseFromString("<body>" + String(html || ""), "text/html");
+    const walk = (node, parent) => {
+      node.childNodes.forEach((c) => {
+        if (c.nodeType === 3) { parent.appendChild(doc.createTextNode(c.nodeValue)); return; }
+        if (c.nodeType !== 1) return;
+        let tag = c.tagName;
+        if (T_DROP[tag]) return;
+        tag = T_MAP[tag] || tag;
+        if (!T_ALLOW[tag]) { walk(c, parent); return; }
+        const el = doc.createElement(tag);
+        const st = cleanStyle(c.getAttribute("style")); if (st) el.setAttribute("style", st);
+        if (tag === "A") {
+          const h = (c.getAttribute("href") || "").trim();
+          if (/^(https?:|mailto:|tel:|#)/i.test(h)) { el.setAttribute("href", h); el.setAttribute("target", "_blank"); el.setAttribute("rel", "noopener noreferrer"); }
+        }
+        if (tag === "IMG") {
+          const src = (c.getAttribute("src") || "").trim();
+          if (!/^(https?:\/\/|data:image\/(png|jpe?g|gif|webp);base64,)/i.test(src)) return;
+          el.setAttribute("src", src); el.setAttribute("alt", c.getAttribute("alt") || "");
+        }
+        if (tag === "TD" || tag === "TH") ["colspan", "rowspan"].forEach((a) => { const v = c.getAttribute(a); if (v && /^\d+$/.test(v)) el.setAttribute(a, v); });
+        walk(c, el);
+        parent.appendChild(el);
+      });
+    };
+    const out = doc.createElement("div"); walk(doc.body, out); return out.innerHTML;
+  }
+  const textToHtml = (t) => esc(t).split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean).map((x) => "<p>" + x.replace(/\n/g, "<br>") + "</p>").join("");
+  const toHtml = (c) => /<\/?(p|h[1-6]|ul|ol|li|div|br|strong|em|b|i|u|a|img|table|blockquote|span)\b/i.test(c || "") ? sanitize(c) : textToHtml(c || "");
+  const plainText = (html) => (new DOMParser().parseFromString("<body>" + String(html || ""), "text/html").body.textContent || "").split(/\s+/).filter(Boolean).join(" ");
+
+  window.IK = { API, esc, money, wa, S, sanitize, toHtml, textToHtml, plainText };
+
+  /* ---------- cart ---------- */
+  const CK = "ik_cart";
+  const getCart = () => JSON.parse(localStorage.getItem(CK) || "[]");
+  const setCart = (c) => { localStorage.setItem(CK, JSON.stringify(c)); drawCart(); };
+  function addToCart(p, size) {
+    const c = getCart();
+    const key = p.id + "|" + size;
+    const f = c.find((x) => x.key === key);
+    if (f) f.qty++;
+    else c.push({ key, name: p.name, price: Number(p.price), image: p.image_url || "", size, qty: 1 });
+    setCart(c);
+    openCart();
+  }
+  function buildCart() {
+    const root = document.createElement("div");
+    root.innerHTML = `<div class="overlay" id="overlay"></div>
+      <aside class="drawer" id="drawer" aria-label="Cart">
+        <header><h3>Your cart</h3><button id="close-cart" aria-label="Close cart">&times;</button></header>
+        <div class="items" id="cart-items"></div>
+        <footer><div class="total"><span>Total</span><span id="cart-total"></span></div>
+        <button class="btn" id="checkout">Order on WhatsApp</button>
+        <small>We confirm stock and delivery with you on WhatsApp.</small></footer>
+      </aside>`;
+    document.body.appendChild(root);
+    $("#open-cart").addEventListener("click", openCart);
+    $("#close-cart").addEventListener("click", closeCart);
+    $("#overlay").addEventListener("click", closeCart);
+    $("#checkout").addEventListener("click", () => {
+      const c = getCart(); if (!c.length) return;
+      const lines = c.map((i) => `- ${i.qty} x ${i.name} (size ${i.size}) = ${money(i.price * i.qty)}`);
+      const total = c.reduce((a, i) => a + i.price * i.qty, 0);
+      window.open(wa("Hello, I'd like to order:\n" + lines.join("\n") + "\nTotal: " + money(total)), "_blank");
+    });
+    $("#cart-items").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-act]"); if (!b) return;
+      const c = getCart(); const i = c.findIndex((x) => x.key === b.dataset.key); if (i < 0) return;
+      if (b.dataset.act === "inc") c[i].qty++;
+      if (b.dataset.act === "dec") c[i].qty = Math.max(1, c[i].qty - 1);
+      if (b.dataset.act === "rm") c.splice(i, 1);
+      setCart(c);
+    });
+    drawCart();
+  }
+  function drawCart() {
+    const c = getCart();
+    const n = c.reduce((a, i) => a + i.qty, 0);
+    const cc = $("#cart-count"); if (cc) cc.textContent = n;
+    const box = $("#cart-items"); if (!box) return;
+    box.innerHTML = c.length ? c.map((i) => `<div class="line">
+      <div class="thumb" style="background-image:url('${esc(i.image)}')"></div>
+      <div><strong>${esc(i.name)}</strong><br><small>Size ${esc(i.size)} &middot; ${money(i.price)}</small>
+        <div class="qty"><button data-act="dec" data-key="${esc(i.key)}" aria-label="Less">&minus;</button><span>${i.qty}</span><button data-act="inc" data-key="${esc(i.key)}" aria-label="More">+</button></div></div>
+      <button class="rm" data-act="rm" data-key="${esc(i.key)}">Remove</button></div>`).join("") : '<p class="empty">Your cart is empty. Pick something from Ready to wear.</p>';
+    $("#cart-total").textContent = money(c.reduce((a, i) => a + i.price * i.qty, 0));
+  }
+  function openCart() { $("#drawer").classList.add("open"); $("#overlay").classList.add("open"); }
+  function closeCart() { $("#drawer").classList.remove("open"); $("#overlay").classList.remove("open"); }
+
+  /* ---------- shop rendering ---------- */
+  function card(p) {
+    const sizes = String(p.sizes || "One size").split(",").map((s) => s.trim()).filter(Boolean);
+    const out = p.in_stock === false;
+    const pic = p.image_url ? `style="background-image:url('${esc(p.image_url)}')"` : "";
+    return `<article class="card" data-id="${esc(p.id)}">
+      <div class="pic" ${pic}>${p.image_url ? "" : esc(p.name)}${out ? '<span class="tag">Sold out</span>' : ""}</div>
+      <div class="info"><h3>${esc(p.name)}</h3><div class="price">${money(p.price)}</div>
+        <p class="desc">${esc(p.description)}</p>
+        <div class="row">${out ? '<button class="btn small" disabled style="opacity:.5;cursor:not-allowed;width:100%">Sold out</button>'
+          : `<select aria-label="Size">${sizes.map((s) => `<option>${esc(s)}</option>`).join("")}</select><button class="btn small" data-add>Add to cart</button>`}</div>
+      </div></article>`;
+  }
+  window.renderShop = async function (box, opts = {}) {
+    let list;
+    try { list = await API.list(); } catch (e) { box.innerHTML = '<p class="empty">Products could not load. Please refresh.</p>'; return; }
+    if (opts.limit) list = list.slice(0, opts.limit);
+    let current = "All";
+    const bar = opts.filters ? $(opts.filters) : null;
+    const draw = () => {
+      const shown = current === "All" ? list : list.filter((p) => p.category === current);
+      box.innerHTML = shown.length ? shown.map(card).join("") : '<p class="empty">Nothing here yet. Check back soon.</p>';
+    };
+    if (bar) {
+      const cats = ["All", ...new Set(list.map((p) => p.category).filter(Boolean))];
+      bar.innerHTML = cats.map((c, i) => `<button class="chip ${i === 0 ? "on" : ""}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+      bar.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-cat]"); if (!b) return;
+        current = b.dataset.cat;
+        bar.querySelectorAll(".chip").forEach((x) => x.classList.toggle("on", x === b));
+        draw();
+      });
+    }
+    box.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-add]"); if (!b) return;
+      const el = b.closest(".card");
+      const p = list.find((x) => String(x.id) === el.dataset.id);
+      addToCart(p, $("select", el).value);
+    });
+    draw();
+  };
+
+  /* ---------- booking form ---------- */
+  function bookingForm() {
+    const f = $("#book-form"); if (!f) return;
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(f));
+      const msg = `Hello, I'd like to book an appointment.\nName: ${d.name}\nPhone: ${d.phone}\nService: ${d.service}\nPreferred date: ${d.date || "Flexible"}\nDetails: ${d.details || "-"}`;
+      window.open(wa(msg), "_blank");
+      $("#book-ok").hidden = false;
+    });
+  }
+
+
+  function fillContact() {
+    const msg = "Hello, I have an enquiry.";
+    document.querySelectorAll("[data-contact]").forEach((ul) => {
+      ul.innerHTML = `<li><b>Address</b>${esc(S.address)}</li>
+        <li><b>WhatsApp</b><a href="${wa(msg)}">+${esc(S.whatsapp)}</a></li>
+        <li><b>Email</b><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></li>
+        <li><b>Instagram</b><a href="${esc(S.instagram)}" target="_blank" rel="noopener">@kamieokreations</a></li>`;
+    });
+    document.querySelectorAll("[data-wa]").forEach((a) => { a.href = wa(msg); a.target = "_blank"; a.rel = "noopener"; });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => { buildChrome(); buildCart(); bookingForm(); fillContact(); });
+})();
+
+</script>
+<script>
+(function () {
+  const { API, esc } = IK;
+  const $ = (s) => document.querySelector(s);
+  let token = sessionStorage.getItem("ik_token") || "";
+  let items = [], imageUrl = "";
+  const say = (t, ok = true) => { $("#msg").innerHTML = t ? '<div class="msg ' + (ok ? "ok" : "err") + '">' + esc(t) + "</div>" : ""; };
+  const fmt = (d) => d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "";
+
+
+  const ed = $("#p-content");
+  try { document.execCommand("defaultParagraphSeparator", false, "p"); } catch (e) {}
+  $("#etools").addEventListener("mousedown", (e) => { if (e.target.closest("button")) e.preventDefault(); });
+  $("#etools").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    ed.focus();
+    if (b.dataset.cmd) document.execCommand(b.dataset.cmd, false, null);
+    if (b.dataset.block) document.execCommand("formatBlock", false, b.dataset.block);
+  });
+  ed.addEventListener("focus", () => { if (!ed.innerHTML.trim()) ed.innerHTML = "<p><br></p>"; });
+  $("#e-link").addEventListener("click", () => {
+    const u = prompt("Paste the link (starting with https://)"); if (!u) return;
+    ed.focus(); document.execCommand("createLink", false, u);
+  });
+  $("#e-img").addEventListener("click", () => $("#e-imgfile").click());
+  $("#e-imgfile").addEventListener("change", async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    say("Uploading picture...");
+    try { const url = await API.upload(f, token); ed.focus(); document.execCommand("insertImage", false, url); say("Picture added."); }
+    catch (err) { say(err.message, false); }
+    e.target.value = "";
+  });
+  // paste from Word, Google Docs or any website: keep the formatting, drop the junk
+  ed.addEventListener("paste", (e) => {
+    const cd = e.clipboardData; if (!cd) return;
+    e.preventDefault();
+    const html = cd.getData("text/html");
+    const clean = html ? IK.sanitize(html) : IK.textToHtml(cd.getData("text/plain"));
+    document.execCommand("insertHTML", false, clean);
+  });
+
+  function gate() {
+    if (!API.online) { $("#demo-flag").hidden = false; show(); return; }
+    if (token) { $("#signout-wrap").hidden = false; show(); } else { $("#login").hidden = false; $("#panel").hidden = true; }
+  }
+  function show() { $("#login").hidden = true; $("#panel").hidden = false; load(); }
+  $("#login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try { token = await API.login($("#email").value, $("#password").value); sessionStorage.setItem("ik_token", token); say(""); $("#signout-wrap").hidden = false; show(); }
+    catch (err) { say(err.message, false); }
+  });
+  $("#signout").addEventListener("click", () => { sessionStorage.removeItem("ik_token"); location.reload(); });
+
+  async function load() {
+    try { items = await API.listPosts(true, token); } catch (e) { say(e.message, false); return; }
+    $("#cats").innerHTML = [...new Set(items.map((p) => p.category).filter(Boolean))].map((c) => '<option value="' + esc(c) + '">').join("");
+    $("#plist").innerHTML = items.length ? items.map((p) => '<div class="prow"><div class="thumb" style="background-image:url(\'' + esc(p.image_url || "") + '\')"></div><div><strong>' + esc(p.title) + "</strong><br><small>" + esc(p.category || "") + " &middot; " + fmt(p.created_at) + " &middot; " + (p.published === false ? "Draft" : "Published") + '</small></div><div class="acts"><button class="btn small ghost" data-edit="' + esc(p.id) + '">Edit</button><button class="btn small ghost" data-del="' + esc(p.id) + '">Delete</button></div></div>').join("") : '<p class="empty">No posts yet. Write your first one.</p>';
+  }
+
+  $("#plist").addEventListener("click", async (e) => {
+    const ed = e.target.closest("[data-edit]"), del = e.target.closest("[data-del]");
+    if (ed) {
+      const p = items.find((x) => String(x.id) === ed.dataset.edit); if (!p) return;
+      $("#form-title").textContent = "Edit post";
+      $("#p-id").value = p.id; $("#p-title").value = p.title; $("#p-cat").value = p.category || ""; $("#p-author").value = p.author || "";
+      $("#p-excerpt").value = p.excerpt || ""; ed.innerHTML = IK.toHtml(p.content || "");
+      $("#p-url").value = (p.image_url || "").startsWith("data:") ? "" : (p.image_url || "");
+      $("#p-pub").checked = p.published !== false; imageUrl = p.image_url || ""; preview(); $("#p-cancel").hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    if (del && confirm("Delete this post?")) {
+      try { await API.removePost(del.dataset.del, token); say("Post deleted."); load(); } catch (err) { say(err.message, false); }
+    }
+  });
+
+  function preview() { const b = $("#p-preview"); if (imageUrl) { b.hidden = false; b.style.backgroundImage = "url('" + imageUrl + "')"; } else b.hidden = true; }
+  function reset() { $("#pform").reset(); ed.innerHTML = ""; $("#p-id").value = ""; $("#form-title").textContent = "New post"; $("#p-cancel").hidden = true; imageUrl = ""; preview(); $("#p-pub").checked = true; }
+  $("#p-cancel").addEventListener("click", reset);
+  $("#p-url").addEventListener("input", (e) => { imageUrl = e.target.value.trim(); preview(); });
+  $("#p-file").addEventListener("change", async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    $("#p-save").disabled = true; say("Uploading photo...");
+    try { imageUrl = await API.upload(f, token); preview(); say("Photo ready."); } catch (err) { say(err.message, false); }
+    $("#p-save").disabled = false;
+  });
+  $("#pform").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const html = IK.sanitize(ed.innerHTML);
+    const text = IK.plainText(html);
+    if (!text && html.indexOf("<img") < 0) { say("Please write something in the post.", false); return; }
+    const p = { id: $("#p-id").value || undefined, title: $("#p-title").value.trim(), category: $("#p-cat").value.trim(), author: $("#p-author").value.trim() || "Kamieo Kreations", excerpt: $("#p-excerpt").value.trim() || (text.length > 160 ? text.slice(0, 157) + "..." : text), content: html, image_url: imageUrl, published: $("#p-pub").checked };
+    try { await API.savePost(p, token); say(p.id ? "Post updated." : "Post saved."); reset(); load(); } catch (err) { say(err.message, false); }
+  });
+  gate();
+})();
+</script>
+</body>
+</html>
