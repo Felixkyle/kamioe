@@ -363,7 +363,7 @@ window.SITE = {
       content: "Hang your clothes on a proper hanger and let them rest a day between wears.\n\nBrush wool gently instead of washing it often. Dry clean only when you really need to.\n\nSteam out small creases rather than pressing hard, so the fabric keeps its shape." }
   ];
   const LS = "ik_products_v2";
-  const hdr = (token) => ({ apikey: S.supabaseKey, Authorization: "Bearer " + (token || S.supabaseKey), "Content-Type": "application/json" });
+  const hdr = (token) => { const h = { apikey: S.supabaseKey, "Content-Type": "application/json" }; if (token) h.Authorization = "Bearer " + token; return h; };
 
   const API = {
     online,
@@ -401,7 +401,7 @@ window.SITE = {
     },
     async listPosts(all, token) {
       if (online) {
-        const r = await fetch(S.supabaseUrl + "/rest/v1/posts?select=*&order=created_at.desc" + (all ? "" : "&published=eq.true"), { headers: hdr(all ? token : undefined) });
+        const r = await fetch(S.supabaseUrl + "/rest/v1/blog_posts?select=*&order=created_at.desc" + (all ? "" : "&published=eq.true"), { headers: hdr(all ? token : undefined) });
         if (!r.ok) throw new Error("Could not load posts");
         return r.json();
       }
@@ -413,7 +413,7 @@ window.SITE = {
     async savePost(p, token) {
       if (online) {
         const body = { title: p.title, category: p.category, author: p.author, excerpt: p.excerpt, content: p.content, image_url: p.image_url, published: p.published };
-        const url = S.supabaseUrl + "/rest/v1/posts" + (p.id ? "?id=eq." + encodeURIComponent(p.id) : "");
+        const url = S.supabaseUrl + "/rest/v1/blog_posts" + (p.id ? "?id=eq." + encodeURIComponent(p.id) : "");
         const r = await fetch(url, { method: p.id ? "PATCH" : "POST", headers: { ...hdr(token), Prefer: "return=minimal" }, body: JSON.stringify(body) });
         if (!r.ok) throw new Error("Save failed (" + r.status + "). Are you signed in?");
         return;
@@ -425,7 +425,7 @@ window.SITE = {
     },
     async removePost(id, token) {
       if (online) {
-        const r = await fetch(S.supabaseUrl + "/rest/v1/posts?id=eq." + encodeURIComponent(id), { method: "DELETE", headers: hdr(token) });
+        const r = await fetch(S.supabaseUrl + "/rest/v1/blog_posts?id=eq." + encodeURIComponent(id), { method: "DELETE", headers: hdr(token) });
         if (!r.ok) throw new Error("Delete failed (" + r.status + ")");
         return;
       }
