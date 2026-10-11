@@ -817,7 +817,10 @@
 
     .drawer footer {
       padding: 1.2rem 1.5rem;
-      border-top: 1px solid var(--stripe)
+      border-top: 1px solid var(--stripe);
+      max-height: 60vh;
+      overflow-y: auto;
+      flex-shrink: 0;
     }
 
     .total {
@@ -1129,6 +1132,15 @@
       aspect-ratio: 4/5
     }
 
+    .slot.pinch {
+      padding: 6%;
+      background: var(--chalk);
+    }
+
+    .slot.pinch img {
+      object-fit: contain;
+    }
+
     .split.reverse .slot {
       order: 2
     }
@@ -1296,8 +1308,9 @@
 
     <section>
       <div class="wrap split">
-        <figure class="slot " data-name="Intro photo"><!-- IMAGE: Intro photo --><img src="images/kam 21.jpg"
-            alt="Tailored menswear" onerror="this.remove()"></figure>
+        <figure class="slot pinch" data-name="Intro photo">
+          <img src="images/kam 38.jpg" alt="Tailored menswear" onerror="this.remove()">
+        </figure>
         <div>
           <h2>The house</h2>
           <p class="lead">We make clothes that fit the person wearing them.</p>
