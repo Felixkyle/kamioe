@@ -325,6 +325,13 @@
       filter: brightness(1)
     }
 
+    .hero .slide.pinch {
+      background-size: auto 100%;
+      /* was 115% — 100% means no zoom at all, just fit the height */
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+
     .hero::before {
       content: "";
       position: absolute;
@@ -1134,7 +1141,9 @@
 
     .slot.pinch {
       padding: 6%;
+      border-radius: 10px;
       background: var(--chalk);
+
     }
 
     .slot.pinch img {
@@ -1285,10 +1294,10 @@
     <section class="hero">
       <!-- IMAGE: Hero slider -->
       <div class="slides" id="hero-slides">
-        <div class="slide on" style="background-image:url('images/hero_01.png')"></div>
+        <div class="slide pinch on" style="background-image:url('images/hero_05.jpg')"></div>
         <div class="slide" style="background-image:url('images/hero_04.png')"></div>
         <div class="slide" style="background-image:url('images/hero_02.png')"></div>
-        <div class="slide" style="background-image:url('images/hero_03.png')"></div>
+        <div class="slide pinch" style="background-image:url('images/hero_06.jpg')"></div>
       </div>
       <div class="wrap">
         <div class="copy">
