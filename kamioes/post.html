@@ -765,6 +765,24 @@
       color: var(--muted)
     }
 
+    .bank-details {
+      background: var(--white);
+      border-left: 3px solid var(--thread);
+      padding: .85rem 1rem;
+      margin-bottom: 1rem;
+      font-size: .92rem;
+      line-height: 1.5;
+    }
+
+    .bank-details strong {
+      display: block;
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--thread);
+      margin-bottom: .35rem;
+    }
+
     /* forms */
     .form {
       background: var(--white);
@@ -1438,6 +1456,7 @@
       instagram: "https://www.instagram.com/kamieokreations",
       facebook: "https://www.facebook.com/share/1CMcw8c7Ti/",
       currency: "₦",
+      fallbackNgnPerUsd: 1500,   // naira per 1 US dollar; only used if the live rate cannot be fetched
 
       // Leave both empty to run in DEMO mode (products saved in this browser only).
       // Fill both to save products online so every visitor sees them.
@@ -1452,7 +1471,70 @@
       const online = !!(S.supabaseUrl && S.supabaseKey);
       const $ = (s, r = document) => r.querySelector(s);
       const esc = (t) => String(t == null ? "" : t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-      const money = (n) => S.currency + Number(n || 0).toLocaleString("en-NG");
+      /* ---------- currency: Nigeria sees naira, everywhere else sees US dollars ---------- */
+      /* Prices are always stored in naira (what the admin types). Only the display changes. */
+      const naira = (n) => S.currency + Number(n || 0).toLocaleString("en-NG");
+      const usdFmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+      const store = {
+        get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode: fine */ } }
+      };
+      const fresh = (c, hours) => !!c && Date.now() - c.t < hours * 36e5;
+      const CUR = { mode: "NGN", rate: Number(S.fallbackNgnPerUsd) || 1500, auto: true };
+
+      /* 1) instant guess, so the first paint is already right for most people */
+      (function () {
+        const q = (new URLSearchParams(location.search).get("cur") || "").toUpperCase();   // ?cur=usd or ?cur=ngn to preview
+        if (q === "USD" || q === "NGN") { CUR.mode = q; CUR.auto = false; }
+        else {
+          const g = store.get("ik_geo");
+          if (g && g.c) CUR.mode = g.c === "NG" ? "NGN" : "USD";
+          else {
+            let tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { /* ignore */ }
+            if (tz && !/^(UTC|Etc\/.*|GMT)$/.test(tz) && tz !== "Africa/Lagos") CUR.mode = "USD";
+          }
+        }
+        const r = store.get("ik_rate"); if (r && r.v > 1) CUR.rate = r.v;
+      })();
+
+      /* 2) confirm with the visitor's real country and a live rate, then redraw prices if anything changed */
+      const getJSON = async (url, ms = 3000) => {
+        const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms);
+        try { const r = await fetch(url, { signal: ctl.signal }); if (!r.ok) throw new Error("HTTP " + r.status); return await r.json(); }
+        finally { clearTimeout(t); }
+      };
+      async function lookupCountry() {
+        const tries = [
+          async () => (await getJSON("https://api.country.is/")).country,
+          async () => (await getJSON("https://ipwho.is/")).country_code
+        ];
+        for (const t of tries) { try { const c = String((await t()) || "").toUpperCase(); if (/^[A-Z]{2}$/.test(c)) return c; } catch (e) { /* try the next one */ } }
+        return "";
+      }
+      async function lookupRate() {
+        const tries = [
+          async () => (await getJSON("https://open.er-api.com/v6/latest/USD")).rates.NGN,
+          async () => (await getJSON("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json")).usd.ngn
+        ];
+        for (const t of tries) { try { const v = Number(await t()); if (isFinite(v) && v > 1) return v; } catch (e) { /* try the next one */ } }
+        return 0;
+      }
+      (async function detectCurrency() {
+        const before = CUR.mode + "|" + CUR.rate;
+        if (CUR.auto && !fresh(store.get("ik_geo"), 12)) {
+          const c = await lookupCountry();
+          if (c) { store.set("ik_geo", { c, t: Date.now() }); CUR.mode = c === "NG" ? "NGN" : "USD"; }
+        }
+        if (CUR.mode === "USD" && !fresh(store.get("ik_rate"), 12)) {
+          const v = await lookupRate();
+          if (v) { store.set("ik_rate", { v, t: Date.now() }); CUR.rate = v; }
+        }
+        if (before !== CUR.mode + "|" + CUR.rate) document.dispatchEvent(new Event("ik:currency"));
+      })();
+
+      const money = (n) => CUR.mode === "USD" ? usdFmt.format(Number(n || 0) / CUR.rate) : naira(n);
+      /* for the WhatsApp order message: the shop owner always also sees the naira amount */
+      const both = (n) => CUR.mode === "USD" ? money(n) + " (" + naira(n) + ")" : naira(n);
       const wa = (text) => "https://wa.me/" + S.whatsapp + "?text=" + encodeURIComponent(text);
 
       /* ---------- header & footer ---------- */
@@ -1678,7 +1760,7 @@
       const toHtml = (c) => /<\/?(p|h[1-6]|ul|ol|li|div|br|strong|em|b|i|u|a|img|table|blockquote|span)\b/i.test(c || "") ? sanitize(c) : textToHtml(c || "");
       const plainText = (html) => (new DOMParser().parseFromString("<body>" + String(html || ""), "text/html").body.textContent || "").split(/\s+/).filter(Boolean).join(" ");
 
-      window.IK = { API, esc, money, wa, S, sanitize, toHtml, textToHtml, plainText };
+      window.IK = { API, esc, money, moneyNGN: naira, wa, S, sanitize, toHtml, textToHtml, plainText };
 
       /* ---------- cart ---------- */
       const CK = "ik_cart";
@@ -1699,9 +1781,16 @@
       <aside class="drawer" id="drawer" aria-label="Cart">
         <header><h3>Your cart</h3><button id="close-cart" aria-label="Close cart">&times;</button></header>
         <div class="items" id="cart-items"></div>
-        <footer><div class="total"><span>Total</span><span id="cart-total"></span></div>
-        <button class="btn" id="checkout">Order on WhatsApp</button>
-        <small>We confirm stock and delivery with you on WhatsApp.</small></footer>
+        <footer>
+          <div class="total"><span>Total</span><span id="cart-total"></span></div>
+          <div class="bank-details">
+            <strong>Payment details</strong>
+            <div>Kamieo Kreations</div>
+            <div>Acct No: 5600299257</div>
+            <div>Fidelity Bank</div>
+          </div>
+          <button class="btn" id="checkout">Order on WhatsApp</button>Order on WhatsApp</button>
+        <small id="cart-note">We confirm stock and delivery with you on WhatsApp.</small></footer>
       </aside>`;
         document.body.appendChild(root);
         $("#open-cart").addEventListener("click", openCart);
@@ -1709,9 +1798,10 @@
         $("#overlay").addEventListener("click", closeCart);
         $("#checkout").addEventListener("click", () => {
           const c = getCart(); if (!c.length) return;
-          const lines = c.map((i) => `- ${i.qty} x ${i.name} (size ${i.size}) = ${money(i.price * i.qty)}`);
+          const lines = c.map((i) => `- ${i.qty} x ${i.name} (size ${i.size}) = ${both(i.price * i.qty)}`);
           const total = c.reduce((a, i) => a + i.price * i.qty, 0);
-          window.open(wa("Hello, I'd like to order:\n" + lines.join("\n") + "\nTotal: " + money(total)), "_blank");
+          const bankInfo = "\n\nPayment details:\nKamieo Kreations\nAcct No: 5600299257\nFidelity Bank";
+          window.open(wa("Hello, I'd like to order:\n" + lines.join("\n") + "\nTotal: " + both(total) + bankInfo), "_blank");
         });
         $("#cart-items").addEventListener("click", (e) => {
           const b = e.target.closest("[data-act]"); if (!b) return;
@@ -1734,6 +1824,7 @@
         <div class="qty"><button data-act="dec" data-key="${esc(i.key)}" aria-label="Less">&minus;</button><span>${i.qty}</span><button data-act="inc" data-key="${esc(i.key)}" aria-label="More">+</button></div></div>
       <button class="rm" data-act="rm" data-key="${esc(i.key)}">Remove</button></div>`).join("") : '<p class="empty">Your cart is empty. Pick something from Ready to wear.</p>';
         $("#cart-total").textContent = money(c.reduce((a, i) => a + i.price * i.qty, 0));
+        const note = $("#cart-note"); if (note) note.textContent = "We confirm stock and delivery with you on WhatsApp." + (CUR.mode === "USD" ? " Prices in US dollars are approximate; the final amount is confirmed on WhatsApp." : "");
       }
       function openCart() { $("#drawer").classList.add("open"); $("#overlay").classList.add("open"); }
       function closeCart() { $("#drawer").classList.remove("open"); $("#overlay").classList.remove("open"); }
@@ -1771,6 +1862,7 @@
             draw();
           });
         }
+        document.addEventListener("ik:currency", draw);
         box.addEventListener("click", (e) => {
           const b = e.target.closest("[data-add]"); if (!b) return;
           const el = b.closest(".card");
@@ -1804,7 +1896,7 @@
         document.querySelectorAll("[data-wa]").forEach((a) => { a.href = wa(msg); a.target = "_blank"; a.rel = "noopener"; });
       }
 
-      document.addEventListener("DOMContentLoaded", () => { buildChrome(); buildCart(); bookingForm(); fillContact(); });
+      document.addEventListener("DOMContentLoaded", () => { buildChrome(); buildCart(); document.addEventListener("ik:currency", drawCart); bookingForm(); fillContact(); });
     })();
 
   </script>
