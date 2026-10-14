@@ -1192,6 +1192,39 @@
       flex-wrap: wrap;
       margin-top: 1.8rem
     }
+
+    .pay-options {
+      margin-bottom: 1rem;
+      display: grid;
+      gap: .5rem
+    }
+
+    .pay-options strong {
+      display: block;
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--thread)
+    }
+
+    .pay-opt {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--white);
+      border: 1px solid var(--stripe);
+      padding: .7rem .9rem;
+      cursor: pointer;
+      font-size: .92rem
+    }
+
+    .pay-opt input {
+      accent-color: var(--thread)
+    }
+
+    .pay-opt:has(input:checked) {
+      border-color: var(--thread)
+    }
   </style>
 </head>
 <!--
@@ -1485,12 +1518,17 @@
         <div class="items" id="cart-items"></div>
         <footer>
           <div class="total"><span>Total</span><span id="cart-total"></span></div>
-          <div class="bank-details">
-            <strong>Payment details</strong>
-            <div>Kamieo Kreations</div>
-            <div>Acct No: 5600299257</div>
-            <div>Fidelity Bank</div>
-          </div>
+    <div class="pay-options">
+  <strong>Payment method</strong>
+  <label class="pay-opt"><input type="radio" name="pay" value="transfer" checked> Bank transfer</label>
+  <label class="pay-opt"><input type="radio" name="pay" value="delivery"> Pay on delivery</label>
+</div>
+<div class="bank-details" id="bank-details">
+  <strong>Payment details</strong>
+  <div>Kamieo Kreations</div>
+  <div>Acct No: 5600299257</div>
+  <div>Fidelity Bank</div>
+</div>
           <button class="btn" id="checkout">Order on WhatsApp</button>Order on WhatsApp</button>
         <small id="cart-note">We confirm stock and delivery with you on WhatsApp.</small></footer>
       </aside>`;
@@ -1498,12 +1536,18 @@
         $("#open-cart").addEventListener("click", openCart);
         $("#close-cart").addEventListener("click", closeCart);
         $("#overlay").addEventListener("click", closeCart);
+        const payVal = () => (document.querySelector('input[name="pay"]:checked') || {}).value || "transfer";
+        document.querySelectorAll('input[name="pay"]').forEach((r) =>
+          r.addEventListener("change", () => { $("#bank-details").hidden = payVal() === "delivery"; })
+        );
         $("#checkout").addEventListener("click", () => {
           const c = getCart(); if (!c.length) return;
           const lines = c.map((i) => `- ${i.qty} x ${i.name} (size ${i.size}) = ${both(i.price * i.qty)}`);
           const total = c.reduce((a, i) => a + i.price * i.qty, 0);
-          const bankInfo = "\n\nPayment details:\nKamieo Kreations\nAcct No: 5600299257\nFidelity Bank";
-          window.open(wa("Hello, I'd like to order:\n" + lines.join("\n") + "\nTotal: " + both(total) + bankInfo), "_blank");
+          const payInfo = payVal() === "delivery"
+            ? "\n\nPayment method: Pay on delivery"
+            : "\n\nPayment method: Bank transfer\nKamieo Kreations\nAcct No: 5600299257\nFidelity Bank";
+          window.open(wa("Hello, I'd like to order:\n" + lines.join("\n") + "\nTotal: " + both(total) + payInfo), "_blank");
         });
         $("#cart-items").addEventListener("click", (e) => {
           const b = e.target.closest("[data-act]"); if (!b) return;
