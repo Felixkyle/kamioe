@@ -328,7 +328,18 @@
     <div class="items" id="cart-items"></div>
     <footer>
       <div class="total"><span>Total</span><span id="cart-total"></span></div>
-      <button class="btn" id="checkout">Checkout</button>
+      <div class="pay-options">
+        <strong>Payment method</strong>
+        <label class="pay-opt"><input type="radio" name="pay" value="transfer" checked> Bank transfer</label>
+        <label class="pay-opt"><input type="radio" name="pay" value="delivery"> Pay on delivery</label>
+      </div>
+      <div class="bank-details" id="bank-details">
+        <strong>Payment details</strong>
+        <div>Kamieo Kreations</div>
+        <div>Acct No: 5600299257</div>
+        <div>Fidelity Bank</div>
+      </div>
+      <button class="btn" id="checkout">Continue to delivery details</button>
       <small id="cart-note">We confirm stock and delivery with you after you place your order.</small>
     </footer>
   </aside>`;
@@ -336,9 +347,17 @@
     $("#open-cart").addEventListener("click", openCart);
     $("#close-cart").addEventListener("click", closeCart);
     $("#overlay").addEventListener("click", closeCart);
+    const payVal = () => (document.querySelector('input[name="pay"]:checked') || {}).value || "transfer";
+    const syncPay = () => {
+      const d = payVal() === "delivery";
+      $("#bank-details").hidden = d;
+      $("#checkout").textContent = d ? "Continue to delivery details" : "Continue to checkout";
+    };
+    document.querySelectorAll('input[name="pay"]').forEach((r) => r.addEventListener("change", syncPay));
+    syncPay();
     $("#checkout").addEventListener("click", () => {
       if (!getCart().length) return;
-      location.href = "checkout.html";
+      location.href = "checkout.html?pay=" + payVal();
     });
     $("#cart-items").addEventListener("click", (e) => {
       const b = e.target.closest("[data-act]"); if (!b) return;
@@ -428,8 +447,8 @@
       ul.innerHTML = `<li><b>Address</b>${esc(S.address)}</li>
     <li><b>WhatsApp</b><a href="${wa(msg)}">+${esc(S.whatsapp)}</a></li>
     <li><b>Email</b><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></li>
-    <li><b>Instagram</b><a href="${esc(S.instagram)}" target="_blank" rel="noopener">@kamieokreations</a></li>
-    <li><b>Facebook</b><a href="${esc(S.facebook)}" target="_blank" rel="noopener">Kamieo Kreations</a></li>`;
+    <li><b>Instagram</b><a href="${esc(S.instagram)}" target="_blank" rel="noopener">@kenahBespoke</a></li>
+    <li><b>Facebook</b><a href="${esc(S.facebook)}" target="_blank" rel="noopener">Kenahbespoke</a></li>`;
     });
     document.querySelectorAll("[data-wa]").forEach((a) => { a.href = wa(msg); a.target = "_blank"; a.rel = "noopener"; });
   }
