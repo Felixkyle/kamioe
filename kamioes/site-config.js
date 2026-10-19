@@ -4,7 +4,7 @@ window.SITE = {
   tagline: "Kreations",
   logo: "images/kamieo_logo.jpg",      // header logo, a file in the images folder
   whatsapp: "2348028879785",          // client's WhatsApp number, country code first, no + or spaces
-  email: "kamieokreations@gmail.com",
+  email: "info@kamieokreations.com",
   address: "House 20, Road 111, Efab Estate, Apo-Dutse, near Cedacrest Hospital, Abuja, Nigeria",
   instagram: "https://www.instagram.com/kenahbespoke?stkn=Z3g0ZjNhNDF4Mm40",
   facebook: "https://www.facebook.com/share/1HuqCCTMmn/",
